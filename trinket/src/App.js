@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
 import './App.css';
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter , Route, Switch } from "react-router-dom";
+import Home from "./components/home"
 import upload from './components/upload'
-import { Menu, Container, Icon } from "semantic-ui-react"
 import DisplayRecommendations from './components/displayRecommendations'
+import DisplayCategories from './components/displayCategories'
 class App extends Component {
+
+
   render() {
     return (
       <div>
-        <Menu fixed='top' inverted>
-          <Container>
-            <Menu.Item as='a' header>{'The EYE'}</Menu.Item>
-          </Container>
-        </Menu>
+        <HashRouter>
+       <Home/>
         <div style={{ marginTop: '5rem' }}>
-          <Router>
             <Switch>
               <Route path="/upload" component={upload} />
               <Route path="/displayRecommendations" component={DisplayRecommendations} />
+              <Route path='/category/type:*/pages:*' component = {DisplayCategories} />
             </Switch>
-          </Router>
         </div>
+        </HashRouter>
       </div>
     );
   }
