@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 import boto3
 from boto.s3.connection import S3Connection
+import math 
 
 #removes the .ds_store which comes when computing list of dirs in the directories
 def removeds_store(path_of_directory):
@@ -100,3 +101,30 @@ def number_of_files_present_in_path_s3(directory_path, bucket_name):
     for sub_folders in bucket.list(prefix = directory_path, delimiter = '/'):
         counter = counter + 1
     return counter
+
+def list_all_sub_folders_s3(url_path, bucket_name):
+    bucket = init_bucket_s3_connection(bucket_name)
+    sub_folders_names = []
+    for sub_folders in  bucket.list(prefix = url_path, delimiter = '/'):
+        sub_folders_names.append(sub_folders.name)
+    return sub_folders_names
+
+def round_it_to_near(number_obtained, round_number):
+    while True:
+        if number_obtained%round_number == 0:
+            return number_obtained
+        else:
+            number_obtained = number_obtained + 1
+
+
+def get_image_urls_with_page(category_name, page):
+    init_page = (page-1)*50
+    pages = init_page + 50
+    fetch_url = 'https://s3.ap-south-1.amazonaws.com/kushal-jewels/images/'
+    total_number_of_images_available = number_of_files_present_in_path_s3(os.path.join('images/',category_name+'/'), 'kushal-jewels')
+    os.path.join(fetch_url, category_name)
+    if((total_number_of_images_available - init_page)>=50):
+        return ([fetch_url+category_name+'/'+str(x)+'.jpeg' for x in range(init_page, pages)], round_it_to_near(total_number_of_images_available, 50))
+    else:
+        return ([fetch_url+category_name+'/'+str(x)+'.jpeg' for x in range(init_page,   total_number_of_images_available)], round_it_to_near(total_number_of_images_available, 50))
+    

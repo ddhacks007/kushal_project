@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Menu, Container, Dropdown } from 'semantic-ui-react'
+import { Menu, Container, Dropdown, DropdownDivider } from 'semantic-ui-react'
 import {get} from 'axios'
 import _ from 'lodash'
 import { Route , withRouter} from 'react-router-dom';
@@ -21,8 +21,9 @@ class Home extends Component{
     }
 
     render(){
+        if(_.isEmpty(this.state.categories)) return null
         return(
-            <Menu fixed='top' inverted>
+        <Menu fixed='top' inverted>
           <Container>
             <Menu.Item as='a' header onClick = {()=>{this.props.history.push('/')}}>{'The EYE'}</Menu.Item>
             <Menu.Item onClick = {() => {this.props.history.push("/upload")}}>{'Upload'}</Menu.Item>

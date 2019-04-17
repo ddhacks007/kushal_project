@@ -4,6 +4,7 @@ from flask_cors import CORS
 from resources.upload_resource import UploadResource
 from config import Config
 from resources.get_categories import GetCategories
+from resources.get_image_urls_pages import GetImageUrlsPages
 from flask_sqlalchemy import SQLAlchemy
 from database import init_db
 
@@ -15,6 +16,8 @@ def initiate_app(app):
     app.add_url_rule('/retrieve/<image_url>', view_func=upload_view, methods = ['GET'])
     get_categories_view = GetCategories.as_view('get_categories_view')
     app.add_url_rule('/categories', view_func=get_categories_view, methods = ['GET'])
+    get_image_urls_pages = GetImageUrlsPages.as_view('get_image_urls_pages')
+    app.add_url_rule('/category/fetch/<category_name>/<page_number>', view_func=get_image_urls_pages, methods = ['GET'])
     CORS(app)
     return app
 
